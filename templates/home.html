@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+     <head>
+       {% load staticfiles %}
+       <meta charset="utf-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+       <meta name="description" content="">
+       <meta name="author" content="">
+       <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+       <link href="{% static 'css/jquery-ui.min.css' %}" rel="stylesheet">
+
+       <style type="text/css">
+	 .todo_content{
+	    background-color: red;
+	    width:30%
+	 }
+	 .todo_list{
+	    margin-top: 40px;
+	    margin-left: 20%;
+	    width:30%
+	 }
+	 .createtodo{
+	    margin-top: -400px;
+	    margin-left: 33%;
+	  }
+	 .duedate{
+	    margin-right:120px;
+	    color:#9DA3A3;
+	 }
+       </style>	 
+     </head>
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">To-Do List</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+        </div><!--/.navbar-collapse -->
+      </div>
+      </div>
+    </nav>
+
+   <div class="col-md-2" style="margin-top:60px">
+     <ul class="nav nav-pills nav-stacked">
+       <li class="active"><a href="/home">Home</a></li>
+       <li><a href="/home">All Tasks</a></li>
+       <li><a href="/filterdate/Today/">Today's Tasks</a></li>
+       <li><a href="/filterdate/Week/">Week's Tasks</a></li>
+       <li><a href="/filterdate/Month/">Month's Tasks</a></li>
+     </ul>
+   </div>
+     <div class="col-md-4" style="margin-top:60px;margin-left:50px">
+     {% for task in tasks %}
+     {% if task.task_state == "ToDo" %}
+     <div class="panel panel-info">
+       <div class="panel-heading">
+         <h3 class="panel-title">{{ task.task_name }}
+	   <a role="menuitem" tabindex="-1" href="/todo/Delete/{{ task.id }}">
+	   <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+	   </a> <span class="pull-right">{{ task.priority }}&nbsp;</span>
+	   </h3>
+	</div>
+     <div class="panel-body">{{ task.task_desc }}</div>
+                
+	        <div class="dropdown" align="right" style="border:2px">
+		  <lable class="duedate">Due Date : {{ task.due_date }}</lable>
+		  <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
+			  data-toggle="dropdown">
+		    Change Status
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+		    <!--li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/home/ToDo">ToDo</a>
+		    </li-->
+		    <li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/todo/Doing/{{ task.id }}">Doing</a>
+		    </li>
+		    <li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/todo/Done/{{ task.id }}">Done</a>
+		    </li>
+		    </ul>
+		    </div>
+
+     </div>
+     {% elif task.task_state == "Doing" %}
+     <div class="panel panel-warning">
+       <div class="panel-heading">
+         <h3 class="panel-title">{{ task.task_name }}
+	   <a role="menuitem" tabindex="-1" href="/todo/Delete/{{ task.id }}">
+	     <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+	   </a> <span class="pull-right">{{ task.priority }}&nbsp;</span>
+	 </h3>
+       </div>
+     <div class="panel-body">{{ task.task_desc }}</div>
+	        <div class="dropdown" align="right">
+		  <lable class="duedate">Due Date : {{ task.due_date }}</lable>
+		  <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
+			  data-toggle="dropdown">
+		    Change Status
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+		    <li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/todo/ToDo/{{ task.id }}">ToDo</a>
+		    </li>
+		    <!--li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/home/Doing">Doing</a>
+		    </li-->
+		    <li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/todo/Done/{{ task.id }}">Done</a>
+		    </li>
+		    </div>
+
+     </div>
+     {% elif task.task_state == "Done" %}
+     <div class="panel panel-success">
+       <div class="panel-heading">
+         <h3 class="panel-title">{{ task.task_name }}
+	   <a role="menuitem" tabindex="-1" href="/todo/Delete/{{ task.id }}">
+	     <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+	   </a> <span class="pull-right">{{ task.priority }}&nbsp;</span>
+	 </h3>
+       </div>
+     <div class="panel-body">{{ task.task_desc }}</div>
+	        <div class="dropdown" align="right">
+		  <lable class="duedate">Due Date : {{ task.due_date }}</lable>
+		  <button type="button" class="btn dropdown-toggle" id="dropdownMenu1" 
+			  data-toggle="dropdown">
+		    Change Status
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+		    <li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/todo/ToDo/{{ task.id }}">ToDo</a>
+		    </li>
+		    <li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/todo/Doing/{{ task.id }}">Doing</a>
+		    </li>
+		    <!--li role="presentation">
+		      <a role="menuitem" tabindex="-1" href="/home/Done">Done</a>
+		    </li-->
+		    </div>
+     </div>
+     {% endif %}
+     {% endfor %}
+   </div>
+
+   <div class="col-md-5">
+     <!--div class="container"-->
+    <div id="signupbox" style="margin-top:60px;margin-left:30px">
+     <div class="panel panel-primary" >
+     <div class="panel-heading">
+      <div class="panel-title">New Task</div>
+     </div>         
+     <div class="panel-body" >
+        <form action="/home/" method="POST" class="form-horizontal" role="form">
+	  {% csrf_token %}
+           <div id="signupalert" style="display:none" class="alert alert-danger">
+            <p>Error:</p>
+            <span></span>
+           </div>
+        <div class="form-group">
+          <label for="task_name" class="col-md-3 control-label">Task Name</label>
+             <div class="col-md-9">
+                <input type="text" class="form-control" name="task_name">
+             </div>
+       </div>
+                                   
+       <div class="form-group">
+           <label for="description" class="col-md-3 control-label">Description</label>
+              <div class="col-md-9">
+                <textarea class="form-control" name="description" rows="4"></textarea>
+              </div>
+      </div>
+
+      <div class="form-group">
+            <label for="priority" class="col-md-3 control-label">Priority</label>
+                <div class="col-md-9">
+                     <select class="form-control" name="priority">
+		       <option>Low</option>
+		       <option>Medium</option>
+		       <option selected="selected">Normal</option>
+		       <option>High</option>
+		       <option>Critical</option>
+		     </select>
+                </div>
+      </div>
+
+       <div class="form-group">
+          <label for="due_date" class="col-md-3 control-label">Due Date</label>
+             <div class="col-md-9">
+	       <input type="date" name="due_date" id="date" class="form-control">
+             </div>
+       </div>
+ 
+      <div class="form-group">
+                         <!-- Button -->                                        
+       <div class="col-md-offset-3 col-md-9">
+         <button type="submit" class="btn btn-primary"><i class="icon-hand-right"></i> Create Task</button>
+       </div>
+      </div>
+    </form>
+   </div>
+   </div>
+   </div>
+   
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+       <script src="{% static 'js/bootstrap.min.js' %}"></script>
+       <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+       <script type="text/javascript" charset="utf-8">
+	 $('#date').datepicker({
+	    dateFormat: 'yy-mm-dd'
+	 });
+       </script> 
+  </body>
+</html>
